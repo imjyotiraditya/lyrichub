@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LyricHub</title>
+    <style>
+        /* Monospace Theme */
+        :root {
+            --bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --primary-color: #569cd6;
+            --secondary-color: #608b4e;
+            --accent-color: #d7ba7d;
+            --error-color: #f44747;
+            --card-bg: #252526;
+            --border-color: #444444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .description {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .platform-switch {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .platform-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .platform-btn.active {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+        }
+
+        .platform-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .platform-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            cursor: pointer;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: #4a85c5;
+        }
+
+        .search-btn:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        .results-container {
+            display: none;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .song-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .song-cover {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin: 5px 0 0 0;
+        }
+
+        .lyrics-container {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .song-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--border-color);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>&lt;LyricHub&gt;</h1>
+            <p class="description">A centralized lyrics hub for multiple music platforms</p>
+        </header>
+
+        <div class="search-container">
+            <div class="platform-switch">
+                <button class="platform-btn active" data-platform="spotify">Spotify</button>
+                <button class="platform-btn" data-platform="genius">Genius</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Enter song name and artist...">
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+
+        <div class="loading">
+            <div class="loader"></div>
+            <p>Searching for lyrics...</p>
+        </div>
+
+        <div class="error-message"></div>
+
+        <div class="results-container">
+            <div class="song-header">
+                <img src="" alt="Album Cover" class="song-cover">
+                <div class="song-info">
+                    <h2 class="song-title"></h2>
+                    <p class="song-artist"></p>
+                </div>
+            </div>
+            <div class="lyrics-container"></div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 LyricHub | Made with &lt;/&gt; by Jyotiraditya Panda</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const platformButtons = document.querySelectorAll('.platform-btn');
+            const searchInput = document.querySelector('.search-input');
+            const searchButton = document.querySelector('.search-btn');
+            const loadingDiv = document.querySelector('.loading');
+            const errorMessage = document.querySelector('.error-message');
+            const resultsContainer = document.querySelector('.results-container');
+            const songCover = document.querySelector('.song-cover');
+            const songTitle = document.querySelector('.song-title');
+            const songArtist = document.querySelector('.song-artist');
+            const lyricsContainer = document.querySelector('.lyrics-container');
+
+            // State
+            let currentPlatform = 'spotify';
+
+            // Platform switch
+            platformButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    platformButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPlatform = btn.dataset.platform;
+                });
+            });
+
+            // Search functionality
+            searchButton.addEventListener('click', async () => {
+                const query = searchInput.value.trim();
+                
+                if (!query) {
+                    showError('Please enter a search query');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    loadingDiv.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    resultsContainer.style.display = 'none';
+                    searchButton.disabled = true;
+
+                    // Fetch lyrics from API
+                    const response = await fetch(`/api/${currentPlatform}?query=${encodeURIComponent(query)}`);
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to fetch lyrics');
+                    }
+
+                    const data = await response.json();
+                    
+                    // Display results
+                    displayResults(data);
+                } catch (error) {
+                    showError(error.message);
+                } finally {
+                    // Hide loading state
+                    loadingDiv.style.display = 'none';
+                    searchButton.disabled = false;
+                }
+            });
+
+            // Allow pressing Enter to search
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !searchButton.disabled) {
+                    searchButton.click();
+                }
+            });
+
+            // Display results
+            function displayResults(data) {
+                songTitle.textContent = data.title;
+                songArtist.textContent = data.artist;
+                
+                if (data.cover) {
+                    songCover.src = data.cover;
+                    songCover.style.display = 'block';
+                } else {
+                    songCover.style.display = 'none';
+                }
+
+                lyricsContainer.textContent = data.lyrics;
+                resultsContainer.style.display = 'block';
+            }
+
+            // Show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                resultsContainer.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
