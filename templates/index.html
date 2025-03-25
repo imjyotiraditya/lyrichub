@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A centralized API hub for retrieving lyrics from multiple music platforms"
+    />
+    <meta
+      name="keywords"
+      content="lyrics, music, Spotify, Genius, API, songs"
+    />
+    <title>LyricHub - Find Lyrics from Multiple Platforms</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='/css/styles.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:title" content="LyricHub" />
+    <meta
+      property="og:description"
+      content="A centralized hub for retrieving lyrics from multiple music platforms"
+    />
+    <meta
+      property="og:url"
+      content="https://imjyotiraditya.github.io/lyrichub"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-content">
+        <div class="logo">
+          <a href="./" class="home-link">
+            <h1>LyricHub</h1>
+          </a>
+          <p class="tagline">
+            A centralized hub for lyrics from multiple platforms
+          </p>
+        </div>
+        <a
+          href="https://github.com/imjyotiraditya/lyrichub"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="github-button"
+        >
+          <i class="fa-brands fa-github"></i> View on GitHub
+        </a>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <div class="container">
+        <div class="platform-switch-container">
+          <div class="platform-switch">
+            <button class="platform-btn active" data-platform="spotify">
+              <i class="fa-brands fa-spotify"></i> Spotify
+            </button>
+            <button class="platform-btn" data-platform="genius">
+              <i class="fa-solid fa-music"></i> Genius
+            </button>
+          </div>
+        </div>
+
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Enter song name or artist (e.g., 'Yellow Coldplay')"
+            class="search-input"
+            aria-label="Song search"
+          />
+          <button id="search-btn" class="btn-primary">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+        </div>
+        <div id="search-status" class="status"></div>
+      </div>
+
+      <div id="loading-indicator" class="loading-container hidden">
+        <div class="loading-spinner"></div>
+        <p>Searching for lyrics...</p>
+      </div>
+
+      <div id="error-container" class="error-container hidden">
+        <i class="fa-solid fa-circle-exclamation error-icon"></i>
+        <p id="error-message">Error retrieving lyrics.</p>
+      </div>
+
+      <div id="results-container" class="container hidden">
+        <div class="lyrics-header">
+          <div class="song-info-wrapper">
+            <div class="song-cover-container">
+              <img
+                id="song-cover"
+                class="song-cover"
+                src=""
+                alt="Album Cover"
+              />
+              <div class="cover-placeholder hidden">
+                <i class="fa-solid fa-music"></i>
+              </div>
+            </div>
+            <div class="song-details">
+              <h2 class="song-title" id="song-title">Song Title</h2>
+              <p class="song-artist" id="song-artist">Artist Name</p>
+              <div class="platform-badge" id="platform-badge">
+                <i class="fa-brands fa-spotify"></i> Spotify
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lyrics-container">
+          <h3>Lyrics</h3>
+          <div class="lyrics-content" id="lyrics-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Made with <span class="heart">♥</span> by Jyotiraditya Panda</p>
+      <p class="disclaimer">
+        This tool is for educational purposes only. Lyrics are property of their
+        respective owners.
+      </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+    <script
+      src="{{ url_for('static', path='/js/script.js') }}"
+      type="module"
+    ></script>
+  </body>
+</html>

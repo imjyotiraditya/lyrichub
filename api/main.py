@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from api.config import settings
 from api.genius.routes import router as genius_router
@@ -8,9 +11,18 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     description=settings.PROJECT_DESCRIPTION,
     version=settings.VERSION,
-    docs_url='/',
+    docs_url='/docs',
     redoc_url=None,
 )
+
+app.mount('/static', StaticFiles(directory='static'), name='static')
+templates = Jinja2Templates(directory='templates')
+
+
+@app.get('/', response_class=HTMLResponse)
+async def get_homepage(request: Request):
+    return templates.TemplateResponse('index.html', {'request': request})
+
 
 app.include_router(spotify_router, prefix='/api/spotify')
 app.include_router(genius_router, prefix='/api/genius')

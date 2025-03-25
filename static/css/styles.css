@@ -1,0 +1,529 @@
+body {
+  font-family: "Fira Code", monospace;
+  background-color: #121212;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 20px;
+}
+
+.site-header {
+  border-bottom: 2px solid #333;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.header-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #e0e0e0;
+}
+
+.home-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.home-link:hover {
+  text-decoration: none;
+}
+
+.tagline {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
+
+.main-layout {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.container {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 4px;
+  border: 2px solid #333;
+  margin-bottom: 20px;
+}
+
+.platform-switch-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.platform-switch {
+  display: flex;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.platform-btn {
+  padding: 10px 20px;
+  background: #252525;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  cursor: pointer;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.platform-btn:first-child {
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+
+.platform-btn:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.platform-btn.active {
+  background: #333;
+  border-color: #555;
+  position: relative;
+}
+
+.platform-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #aaa;
+}
+
+.platform-btn:hover {
+  background: #333;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.3);
+}
+
+::selection {
+  background-color: #444;
+  color: #e0e0e0;
+}
+
+::-moz-selection {
+  background-color: #444;
+  color: #e0e0e0;
+}
+
+input::selection {
+  background-color: #444;
+  color: #e0e0e0;
+}
+
+input::-moz-selection {
+  background-color: #444;
+  color: #e0e0e0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e0e0e0;
+  -webkit-box-shadow: 0 0 0px 1000px #252525 inset;
+  transition: background-color 5000s ease-in-out 0s;
+  border-color: #666;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: #444;
+  border-color: #555;
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.3);
+  border-color: #666;
+}
+
+.btn-primary:disabled {
+  background: #2a2a2a;
+  border-color: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.lyrics-header {
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.song-info-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.song-cover-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background-color: #252525;
+  border: 1px solid #333;
+}
+
+.song-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 40px;
+  color: #444;
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.song-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #e0e0e0;
+  word-break: break-word;
+}
+
+.song-artist {
+  margin: 0;
+  font-size: 18px;
+  color: #aaa;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #252525;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #333;
+  margin-top: 10px;
+  font-size: 12px;
+  width: fit-content;
+}
+
+.lyrics-container {
+  background: #1e1e1e;
+  border-radius: 4px;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+.lyrics-container h3 {
+  margin: 0;
+  padding: 15px 20px;
+  background: #252525;
+  color: #e0e0e0;
+  font-size: 16px;
+  font-weight: normal;
+  border-bottom: 1px solid #333;
+}
+
+.lyrics-content {
+  padding: 20px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  font-size: 15px;
+  min-height: 200px;
+  max-height: 500px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #1e1e1e;
+}
+
+.lyrics-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.lyrics-content::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.lyrics-content::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+  border: 2px solid #1e1e1e;
+}
+
+.status {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  display: none;
+  font-family: "Fira Code", monospace;
+}
+
+.status.success {
+  background: #1b5e20;
+  border: 1px solid #2e7d32;
+  display: block;
+}
+
+.status.error {
+  background: #c62828;
+  border: 1px solid #d32f2f;
+  display: block;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #1e1e1e;
+  border-radius: 4px;
+  border: 2px solid #333;
+  margin-bottom: 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #333;
+  border-top: 3px solid #569cd6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  margin: 0;
+  color: #888;
+  font-family: "Fira Code", monospace;
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #2d1313;
+  border: 1px solid #662020;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  color: #e88;
+  font-family: "Fira Code", monospace;
+}
+
+.error-icon {
+  color: #e55;
+  margin-right: 15px;
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.error-container p {
+  margin: 0;
+}
+
+.github-button {
+  padding: 8px 12px;
+  background: #333;
+  color: #e0e0e0;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 1px solid #444;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  font-family: "Fira Code", monospace;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.github-button:hover {
+  background: #444;
+  border-color: #555;
+}
+
+.github-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.3);
+  border-color: #666;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-family: "Fira Code", monospace;
+  color: #888;
+  border-top: 1px solid #333;
+  margin-top: auto;
+}
+
+.heart {
+  color: #e55;
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.disclaimer {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.time-synced-line {
+  padding: 5px 0;
+  transition: opacity 0.3s ease;
+}
+
+.time-synced-line.dimmed {
+  opacity: 0.5;
+}
+
+.time-synced-line.highlight {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.timestamp {
+  color: #888;
+  font-size: 0.8em;
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .logo {
+    align-items: center;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  .song-info-wrapper {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .song-details {
+    align-items: center;
+  }
+
+  .lyrics-content {
+    max-height: 400px;
+  }
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #e0e0e0;
+  padding: 12px 24px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  font-family: "Fira Code", monospace;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+}
