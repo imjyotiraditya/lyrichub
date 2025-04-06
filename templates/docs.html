@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }} - API Documentation</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='/css/docs.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>{{ title }} API</h1>
+        <p class="description">{{ description }}</p>
+        <p class="version">Version: {{ version }}</p>
+      </header>
+
+      <section class="api-section">
+        <h2>API Endpoints</h2>
+        <div id="endpoints-container">
+          <div class="loading-indicator">Loading API documentation...</div>
+        </div>
+      </section>
+
+      <footer>
+        <p>&copy; 2025 LyricHub | Made with &lt;/&gt; by Jyotiraditya Panda</p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const response = await fetch("/openapi.json");
+          const openApiSpec = await response.json();
+
+          renderApiDocumentation(openApiSpec);
+        } catch (error) {
+          console.error("Failed to load OpenAPI specification:", error);
+          document.getElementById(
+            "endpoints-container"
+          ).innerHTML = `<div class="error-card">Failed to load API documentation: ${error.message}</div>`;
+        }
+      });
+
+      function renderApiDocumentation(spec) {
+        const container = document.getElementById("endpoints-container");
+        container.innerHTML = "";
+
+        for (const [path, pathItem] of Object.entries(spec.paths)) {
+          if (!path.includes("/api/")) {
+            continue;
+          }
+
+          for (const [method, operation] of Object.entries(pathItem)) {
+            const pathParts = path.split("/");
+            const platformName = pathParts[2]
+              ? pathParts[2].charAt(0).toUpperCase() + pathParts[2].slice(1)
+              : "API";
+
+            const endpointCard = document.createElement("div");
+            endpointCard.className = "endpoint-card";
+            endpointCard.innerHTML = `
+                        <h3>${platformName} Lyrics</h3>
+                        <div class="endpoint-path">GET ${path}</div>
+                        <p>${
+                          operation.description ||
+                          operation.summary ||
+                          `Get lyrics from ${platformName}`
+                        }</p>
+                        
+                        <h4>Parameters</h4>
+                        <table class="params-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${renderParameters(operation.parameters)}
+                            </tbody>
+                        </table>
+                        
+                        <h4>Response Format</h4>
+                        <div class="response-example">
+<pre class="code">{
+  "title": "Song Title",
+  "artist": "Artist Name",
+  "cover": "https://cover-image-url.jpg",
+  "lyrics": "${
+    platformName === "Spotify"
+      ? "[00:12.79]First line of lyrics\\n[00:15.45]Second line of lyrics"
+      : "First verse lyrics\\n\\nChorus lyrics"
+  }"
+}</pre>
+                        </div>
+                        
+                        <div class="url-builder">
+                            <h4>Try it yourself</h4>
+                            <div class="url-input">
+                                <span class="base-url">${path}?query=</span>
+                                <input type="text" class="query-input" placeholder="Enter song name and artist">
+                            </div>
+                            <button class="try-btn" data-path="${path}">Send Request</button>
+                            <div class="result-container">
+                                <pre class="response-output"></pre>
+                            </div>
+                        </div>
+                    `;
+
+            container.appendChild(endpointCard);
+          }
+        }
+
+        const tryButtons = document.querySelectorAll(".try-btn");
+
+        tryButtons.forEach((button) => {
+          button.addEventListener("click", async function () {
+            const container = this.closest(".endpoint-card");
+            const baseUrl = container.querySelector(".base-url").textContent;
+            const queryInput = container.querySelector(".query-input").value;
+            const resultContainer =
+              container.querySelector(".result-container");
+            const responseOutput = container.querySelector(".response-output");
+
+            if (!queryInput) {
+              alert("Please enter a search query");
+              return;
+            }
+
+            try {
+              button.textContent = "Loading...";
+              button.disabled = true;
+
+              const response = await fetch(
+                `${baseUrl}${encodeURIComponent(queryInput)}`
+              );
+              let data;
+
+              try {
+                data = await response.json();
+              } catch (error) {
+                throw new Error("Invalid response format");
+              }
+
+              // Format JSON without highlighting
+              const formattedJson = JSON.stringify(data, null, 2);
+              responseOutput.textContent = formattedJson;
+              resultContainer.style.display = "block";
+            } catch (error) {
+              const errorJson = JSON.stringify(
+                { error: error.message },
+                null,
+                2
+              );
+              responseOutput.textContent = errorJson;
+              resultContainer.style.display = "block";
+            } finally {
+              button.textContent = "Send Request";
+              button.disabled = false;
+            }
+          });
+        });
+      }
+
+      function renderParameters(parameters) {
+        if (!parameters || parameters.length === 0) {
+          return '<tr><td colspan="3">No parameters</td></tr>';
+        }
+
+        return parameters
+          .map((param) => {
+            return `
+                    <tr>
+                        <td>${param.name}</td>
+                        <td>${
+                          param.required
+                            ? '<span class="required">Yes</span>'
+                            : "No"
+                        }</td>
+                        <td>${param.description || ""}</td>
+                    </tr>
+                `;
+          })
+          .join("");
+      }
+    </script>
+  </body>
+</html>
